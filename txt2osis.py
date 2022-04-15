@@ -62,6 +62,7 @@ book_old = ""
 book_chapter_old = ""
 book_chapter_verse_old = ""
 verse_rawstring = ""
+verses = 0
 for word in bhp_txt.itertuples():
     word_code = str(word[1])
     # word_rawstring = str(word[2])
@@ -73,22 +74,23 @@ for word in bhp_txt.itertuples():
     book_chapter_verse = book_chapter + verse
     book_formatted = numbertrans[int(book)]
     book_chapter_formatted = book_formatted + "." + str(int(chapter))
-    if book != book_old:
-        if verse_rawstring != "": # a new book has been started
-            print("  </div>")
-        # output the current book name
-        print(f"  <div osisID=\"{book_formatted}\" type=\"book\">")
-        verse_rawstring = ""
-    if book_chapter != book_chapter_old:
-        if verse_rawstring != "": # a new chapter has been started
-            print("   </chapter>")
-        # output the current chapter name
-        print(f"   <chapter osisID=\"{book_chapter_formatted}\">")
-        verse_rawstring = ""
     if book_chapter_verse != book_chapter_verse_old and verse_rawstring != "": # a new verse has been started
+        verses += 1
         # output the old verse
         print(f"    <verse osisID=\"{book_chapter_verse_formatted}\">{verse_rawstring}</verse>")
-        verse_rawstring = ""
+        verse_rawstring = "" # start with a new verse
+    if book_chapter != book_chapter_old:
+        if verses > 0: # a new chapter has been started
+            print("   </chapter>")
+    if book != book_old:
+        if verses > 0: # a new book has been started
+            print("  </div>")
+    if book != book_old:
+        # output the current book name
+        print(f"  <div osisID=\"{book_formatted}\" type=\"book\">")
+    if book_chapter != book_chapter_old:
+        # output the current chapter name
+        print(f"   <chapter osisID=\"{book_chapter_formatted}\">")
     book_chapter_verse_formatted = book_chapter_formatted + "." + str(int(verse))
     if verse_rawstring != "":
         verse_rawstring += " "
