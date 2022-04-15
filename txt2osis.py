@@ -100,6 +100,7 @@ for word in bhp_txt.itertuples():
     book_old = book
 
 # finish Revelations
+print(f"    <verse osisID=\"{book_chapter_verse_formatted}\">{verse_rawstring}</verse>")
 print("   </chapter>")
 print("  </div>") # book
 
