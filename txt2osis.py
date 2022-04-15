@@ -1,5 +1,6 @@
 # Create an OSIS XML file based on the .txt version of BHP
 import pandas as pd
+import math
 
 numbertrans = {
     40: 'Matt',
@@ -46,6 +47,9 @@ def osis_head():
     <identifier type="OSIS">Bible.BHPGNT</identifier>
     <refSystem>Bible.Calvin</refSystem>
    </work>
+   <work osisWork="strong">
+    <refSystem>Dict.Strongs</refSystem>
+   </work>
   </header>
 """
 
@@ -67,6 +71,16 @@ for word in bhp_txt.itertuples():
     word_code = str(word[1])
     # word_rawstring = str(word[2])
     word_rawstring = str(word[3])
+    strong = word[7]
+    if (type(strong) == int or type(strong) == float) and not math.isnan(strong):
+        strong = int(strong)
+        if strong % 10 != 0:
+            strong = ""
+        else:
+            strong /= 10 # just remove the ending 0
+            strong = int(strong)
+    else:
+        strong = ""
     book = word_code[0:2]
     chapter = word_code[2:5]
     verse = word_code[5:8]
@@ -94,7 +108,10 @@ for word in bhp_txt.itertuples():
     book_chapter_verse_formatted = book_chapter_formatted + "." + str(int(verse))
     if verse_rawstring != "":
         verse_rawstring += " "
-    verse_rawstring += word_rawstring
+    if strong == "":
+        verse_rawstring += word_rawstring
+    else:
+        verse_rawstring += f"<w lemma=\"strong:G{strong}\">{word_rawstring}</w>"
     book_chapter_verse_old = book_chapter_verse
     book_chapter_old = book_chapter
     book_old = book
