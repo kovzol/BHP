@@ -42,7 +42,7 @@ def osis_head():
  <osisText osisIDWork="BHPGNT" osisRefWork="Bible" xml:lang="grc" canonical="true">
   <header>
    <work osisWork="BHPGNT">
-    <title>Bunning Heuristic Prototype Greek New Testamen</title>
+    <title>Bunning Heuristic Prototype Greek New Testament</title>
     <identifier type="OSIS">Bible.BHPGNT</identifier>
     <refSystem>Bible.Calvin</refSystem>
    </work>
